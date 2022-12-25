@@ -33,7 +33,7 @@ public class RealEstate {
         String username = scanner.nextLine();
         System.out.println("Enter your password: ");
         String password = scanner.nextLine();
-        if (User.isMember(username, password) == true) {
+        if (User.isMember(username, password)) {
             for (int i = 0; i < User.users.length; i++) {
                 user = User.users[i];
             }
@@ -51,7 +51,7 @@ public class RealEstate {
                 postingLimitation = true;
             }
         } else if (!user.isBroker()) {
-            if (user.getPostLimit() < Constant.NOT_BROKER_LIMIT) {
+            if (user.getPostLimit() < Constant.REGULAR_USER_LIMIT) {
                 postingLimitation = true;
             }
         }

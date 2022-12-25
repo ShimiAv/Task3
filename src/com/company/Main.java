@@ -12,7 +12,6 @@ public class Main {
 
     public static void programMenu() {
         Scanner scanner = new Scanner(System.in);
-        RealEstate realEstate = new RealEstate();
         int userInput;
         do {
             System.out.println("Welcome to my Real-Estate program");
@@ -27,7 +26,7 @@ public class Main {
 
             } else if (userInput == Constant.EXIT_PROGRAM) System.exit(0);
 
-        } while (userInput != Constant.CREATE_ACCOUNT || userInput != Constant.SIGN_IN || userInput != Constant.EXIT_PROGRAM);
+        } while (true);
 
 
     }

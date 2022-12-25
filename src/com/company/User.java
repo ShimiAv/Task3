@@ -78,10 +78,12 @@ public class User {
         return isEquals;
     }
 
-
-
-
     public User(String userNameChecker, String passwordValidation, String phoneNumberValidation, boolean brokerChecker) {
+        this.userName = userNameChecker();
+        this.password = passwordValidation();
+        this.phoneNumber = phoneNumberValidation();
+        this.broker = isBrokerChecker();
+
     }
 
     public static String userNameChecker() {
