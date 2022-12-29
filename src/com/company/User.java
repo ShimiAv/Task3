@@ -5,67 +5,32 @@ import java.util.Scanner;
 public class User {
 
 
-    private String userName;
-    private String password;
-    private String phoneNumber;
-    private boolean broker;
+    private final String userName;
+    private final String password;
+    private final String phoneNumber;
+    private static boolean broker;
     public static User[] users;
-    private int postLimit;
+    private static int postLimit;
 
-    public int getPostLimit() {
+
+    public static int getPostLimit() {
         return postLimit;
     }
 
-    public void setPostLimit(int postLimit) {
-        this.postLimit = postLimit;
-    }
 
     public User() {
-        this.userName = userNameChecker();
-        this.password = passwordValidation();
-        this.phoneNumber = phoneNumberValidation();
-        this.broker = isBrokerChecker();
+        this.userName = null;
+        this.password = null;
+        this.phoneNumber = null;
+        this.broker = false;
     }
 
-    void userLogin() {
-        int userLoggedIn;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your username:");
-        String userNameToCheck = scanner.nextLine();
-        System.out.println("Enter your password:");
-        String passwordToCheck = scanner.nextLine();
-        isMember(passwordToCheck,userNameToCheck);
-        for (int i = 0; i < User.users.length; i++) {
-            if (!User.users[i].equals(userNameToCheck, passwordToCheck)) {
-                System.out.println("Incorrect username or password! Returning to the main menu.");
-                userLoggedIn = 0;
-                Main.programMenu();
-            } else {
-                userLoggedIn = 1;
-                System.out.println("[1] - Post a new property");
-                System.out.println("[2] - Remove a property");
-                System.out.println("[3] - Show all properties");
-                System.out.println("[4] - Show all properties posted by you");
-                System.out.println("[5] - Search");
-                System.out.println("[6] - Logout and return to main menu");
-                int userSelection;
-                User user = new User(userNameToCheck, passwordToCheck, User.users[i].getPhoneNumber(), User.users[i].isBroker());
-                userSelection = scanner.nextInt();
-                switch (userSelection) {
-                    case Constant.POST_NEW_PROPERTY:
-                        RealEstate.postNewProperty(user);
-                        if (RealEstate.postNewProperty(user)) {
-                        } else {
-                            System.out.println("You reached the limit of posts.");
-                        }
-
-                }
-            }
-        }
-
+    public static void setPostLimit(int postLimit) {
+        User.postLimit = postLimit;
     }
 
-    private boolean equals(String userName, String loginUserPassword) {
+
+    private boolean equals(String userName) {
         boolean isEquals = false;
         for (int i = 0; i < users.length; i++) {
             if (users[i].getUserName().equals(userName)) {
@@ -141,7 +106,7 @@ public class User {
             boolean hasSpecialCharacter = false;
             for (int i = 0; i < passwordToCheck.length(); i++) {
                 char c = passwordToCheck.charAt(i);
-                if (c == Constant.DOLLAR_SIGN || c == Constant.PERCENT_SIGN || c == Constant.LOWER_MAKAF) {
+                if (c == Constants.DOLLAR_SIGN || c == Constants.PERCENT_SIGN || c == Constants.UNDERSCORE) {
                     hasSpecialCharacter = true;
                     break;
                 }
@@ -185,27 +150,27 @@ public class User {
         System.out.println("Enter |1| for No");
         System.out.println("Enter |2| for Yes");
         int usersChoice = scanner.nextInt();
-        boolean isBroker = false;
-        if (usersChoice == Constant.IS_BROKER) {
-            isBroker = true;
-
-        }
+        boolean isBroker = usersChoice == Constants.IS_BROKER;
         return isBroker;
 
     }
 
-    public static boolean isMember(String userNameToCheck, String userPasswordCheck) {
-        boolean isMember = false;
-        if (users.length > 0) {
-            for (int i = 0; i < users.length; i++) {
-                if (users[i].getUserName().equals(userNameToCheck)) {
-                    if (users[i].getPassword().equals(userPasswordCheck)) {
-                        isMember = true;
+    public static int isMember(String userNameToCheck, String userPasswordCheck) {
+        int result = Constants.INVALID_VALUE;
+        if (users != null) {
+            for (int i = 0; i < users.length; i++){
+                if (users[i].getUserName().equals(userNameToCheck)){
+                    if (users[i].getPassword().equals(userPasswordCheck)){
+                        result = i;
+                        break;
                     }
                 }
             }
         }
-        return isMember;
+        if (result == Constants.INVALID_VALUE) {
+            System.out.println("One of the user details is incorrect");
+        }
+        return result;
     }
 
 
@@ -221,7 +186,7 @@ public class User {
         return phoneNumber;
     }
 
-    public boolean isBroker() {
+    public static boolean isBroker() {
         return broker;
     }
 
