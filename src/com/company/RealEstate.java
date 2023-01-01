@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class RealEstate {
     private static Property[] properties;
     private static City[] cities;
-    private User[] users;
+    private final User[] users;
 
     private final Property[] PROPERTIES = new Property[0]; //O(1)
 

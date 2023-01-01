@@ -3,7 +3,6 @@ package com.company;
 import java.util.Scanner;
 
 public class Main {
-    private static final RealEstate realEstate = new RealEstate(); // O(1)
     private static final Scanner scanner = new Scanner(System.in); // O(1)
 
     public static void main(String[] args) {
@@ -24,7 +23,6 @@ public class Main {
 
             if (userInput == Constants.CREATE_ACCOUNT) {
                 RealEstate.createAccount();
-                userInput = Constants.INVALID_VALUE;
 
             } else if (userInput == Constants.SIGN_IN) {
                 User current = RealEstate.userLogin();
@@ -33,7 +31,6 @@ public class Main {
                     secondMenu(current);
 
                 }
-                userInput = Constants.INVALID_VALUE;
 
             } else if (userInput == Constants.EXIT_PROGRAM) System.exit(0);
 
