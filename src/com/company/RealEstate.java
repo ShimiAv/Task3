@@ -7,7 +7,7 @@ public class RealEstate {
     private static City[] cities;
     private User[] users;
 
-    private final Property[] PROPERTIES = new Property[0];
+    private final Property[] PROPERTIES = new Property[0]; //O(1)
 
     public RealEstate() {
         users = new User[]{
@@ -27,7 +27,7 @@ public class RealEstate {
                 new City("holon", "center", new String[]{"yaffo, hertzel, alenbi"}),
                 new City("yaffo", "center", new String[]{"yaffo, hertzel, alenbi"}),
         };
-    }
+    } //O(n)
 
     public static void createAccount() {
         User user = new User();
@@ -37,7 +37,7 @@ public class RealEstate {
         User.isBrokerChecker();
         User.users = addUser(User.users, user);
         System.out.println("Registration completed successfully");
-    }
+    } //O(n)
 
     private static User[] addUser(User[] users, User newUser) {
         int length;
@@ -55,9 +55,9 @@ public class RealEstate {
         tempUsersList[length] = newUser;
 
         return tempUsersList;
-    }
+    } //O(n)
 
-    private static void postNewProperty(User user) {
+    public static boolean postNewProperty(User user) {
         boolean isAllowed = false;
         if (!isAllowedToPost()) {
             System.out.println("you have reached the post limitation ");
@@ -103,11 +103,12 @@ public class RealEstate {
                 }
             }
         }
-    }
+        return isAllowed;
+    } //O(n)
 
     public static void removeProperty(User user) {
         Scanner scanner = new Scanner(System.in);
-        int userPosts = punishmentsCounter(user);
+        int userPosts = publishesCounter(user);
         if (userPosts == 0) {
             System.out.println("There are no ads for you to delete");
         } else {
@@ -127,7 +128,7 @@ public class RealEstate {
 
             int userInput = scanner.nextInt();
             scanner.nextLine();
-            int postIndex = getChosenPostIndex(postIdArray, userInput);
+            int postIndex = getPostIndex(postIdArray, userInput);
             if (postIndex != Constants.INVALID_VALUE) {
                 properties = deletePost(postIndex);
                 System.out.println("The ad has been successfully deleted");
@@ -135,7 +136,7 @@ public class RealEstate {
                 System.out.println("Error The ad has not been deleted");
             }
         }
-    }
+    } //O(n)
 
     private static int propertyType() {
         Scanner scanner = new Scanner(System.in);
@@ -147,7 +148,7 @@ public class RealEstate {
         scanner.nextLine();
 
         return propertyType;
-    }
+    } //O(1)
 
     private static Property[] addProperty(Property[] properties, Property property) {
         int arrLength;
@@ -166,7 +167,7 @@ public class RealEstate {
 
         tempProperties[arrLength] = property;
         return tempProperties;
-    }
+    } //O(n)
 
     private static Property[] deletePost(int postIndex) {
         int arrLength;
@@ -186,7 +187,7 @@ public class RealEstate {
         }
 
         return tempProperties;
-    }
+    } //O(n)
 
     private static int cityChecker(String cityName) {
         int indexOfCity = Constants.INVALID_VALUE;
@@ -197,7 +198,7 @@ public class RealEstate {
             }
         }
         return indexOfCity;
-    }
+    } //O(n)
 
     private static void setForRentFromUser(Property property) {
         Scanner scanner = new Scanner(System.in);
@@ -209,7 +210,7 @@ public class RealEstate {
         forRent = scanner.nextInt();
         scanner.nextLine();
         property.setForRent(forRent);
-    }
+    } //O(1)
 
     private static void setHouseNumberFromUser(Property property) {
         Scanner scanner = new Scanner(System.in);
@@ -218,7 +219,7 @@ public class RealEstate {
         houseNumber = scanner.nextInt();
         scanner.nextLine();
         property.setHouseNumber(houseNumber);
-    }
+    } //O(1)
 
     private static void usersInputFloorNumber(Property property) {
         Scanner scanner = new Scanner(System.in);
@@ -227,7 +228,7 @@ public class RealEstate {
         floor = scanner.nextInt();
         scanner.nextLine();
         property.setFloorNumber(floor);
-    }
+    } //O(1)
 
     private static void usersInputRoomAmount(Property property) {
         Scanner scanner = new Scanner(System.in);
@@ -236,7 +237,7 @@ public class RealEstate {
         roomsAmount = scanner.nextInt();
         scanner.nextLine();
         property.setRoomAmount(roomsAmount);
-    }
+    } //O(1)
 
     private static int streetChecker(String streetName, int cityIndex) {
         int streetIndex = Constants.INVALID_VALUE;
@@ -248,10 +249,9 @@ public class RealEstate {
             }
         }
         return streetIndex;
-    }
+    } //O(n)
 
-
-    private static int punishmentsCounter(User user) {
+    private static int publishesCounter(User user) {
         int counter = 0;
         if (properties != null) {
             for (int i = 0; i < properties.length; i++) {
@@ -261,9 +261,9 @@ public class RealEstate {
             }
         }
         return counter;
-    }
+    } //O(n)
 
-    private static int getChosenPostIndex(int[][] postId, int userInput) {
+    private static int getPostIndex(int[][] postId, int userInput) {
         int index = Constants.INVALID_VALUE;
         if (postId != null) {
             for (int i = 0; i < postId.length; i++) {
@@ -274,37 +274,7 @@ public class RealEstate {
             }
         }
         return index;
-    }
-
-    public static void loginMenu(User user) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("[1] - Post a new property");
-        System.out.println("[2] - Remove a property");
-        System.out.println("[3] - Show all properties");
-        System.out.println("[4] - Show all your properties ");
-        System.out.println("[5] - Search");
-        System.out.println("[6] - Logout and return to main menu");
-        int userSelection = scanner.nextInt();
-
-
-        if (userSelection == Constants.POST_NEW_PROPERTY) {
-            postNewProperty(user);
-        } else if (userSelection == Constants.REMOVE_PROPERTY) {
-            removeProperty(user);
-        } else if (userSelection == Constants.SHOW_ALL_PROPERTIES) {
-            printAllProperties();
-        } else if (userSelection == Constants.SHOW_USERS_PROPERTIES) {
-            printProperties(user);
-        } else if (userSelection == Constants.SEARCH_PROPERTY) {
-            searchProperty();
-        } else if (userSelection == Constants.LOG_OUT) {
-            Main.programMenu();
-        } else {
-            Main.programMenu();
-        }
-
-    }
-
+    } //O(n)
 
     private static String usersCityInput() {
         Scanner scanner = new Scanner(System.in);
@@ -318,7 +288,7 @@ public class RealEstate {
         cityName = scanner.nextLine();
         cityName = cityName.toLowerCase().trim();
         return cityName;
-    }
+    } //O(n)
 
     public static Property[] searchProperty() {
         Property[] filteredProperties = null;
@@ -341,7 +311,7 @@ public class RealEstate {
         }
 
         return filteredProperties;
-    }
+    } //O(n)
 
     private static Integer roomAmountFilter() {
         Scanner scanner = new Scanner(System.in);
@@ -356,7 +326,7 @@ public class RealEstate {
         }
 
         return roomAmount;
-    }
+    } //O(1)
 
     private static Property[] adsFilter(Property[] properties, Boolean forRent, Integer type, Integer roomNumber, Integer minPrice, Integer maxPrice) {
         Property[] propertyListAfterFiltration = null;
@@ -372,7 +342,7 @@ public class RealEstate {
             }
         }
         return propertyListAfterFiltration;
-    }
+    } //O(n)
 
     public static void printAllProperties() {
         int count = 0;
@@ -384,9 +354,9 @@ public class RealEstate {
         } else {
             System.out.println("Currently there are no publications");
         }
-    }
+    } //O(n)
 
-    public static void printProperties(User user) {
+    public static void printUsersProperties(User user) {
         int counter = 0;
         if (properties != null) {
             for (int i = 0; i < properties.length; i++) {
@@ -401,7 +371,7 @@ public class RealEstate {
         } else {
             System.out.println("No ads were found that you posted");
         }
-    }
+    } //O(n)
 
     private static String usersStreetInput(int cityIndex) {
         Scanner scanner = new Scanner(System.in);
@@ -415,7 +385,7 @@ public class RealEstate {
         streetName = streetName.toLowerCase().trim();
 
         return streetName;
-    }
+    } //O(n)
 
     private static void setPropertyPriceFromUser(Property property) {
         Scanner scanner = new Scanner(System.in);
@@ -424,7 +394,7 @@ public class RealEstate {
         price = scanner.nextInt();
         scanner.nextLine();
         property.setPrice(price);
-    }
+    } //O(n)
 
     private static boolean isAllowedToPost() {
         boolean postingLimitation = false;
@@ -438,7 +408,7 @@ public class RealEstate {
             }
         }
         return postingLimitation;
-    }
+    }  //O(n)
 
     public static User userLogin() {
         Scanner scanner = new Scanner(System.in);
@@ -451,9 +421,9 @@ public class RealEstate {
         if (userToShowIndex != Constants.INVALID_VALUE) {
             current = User.users[userToShowIndex];
 
-        } else Main.programMenu();
+        } else Main.generalMenu();
         return current;
-    }
+    }  //O(n)
 
     private static Boolean rentFilter() {
         Scanner scanner = new Scanner(System.in);
@@ -482,7 +452,7 @@ public class RealEstate {
             }
         } while (!endLoop);
         return forRent;
-    }
+    }  //O(1)
 
     private static Integer typeFilter() {
         Scanner scanner = new Scanner(System.in);
@@ -496,6 +466,8 @@ public class RealEstate {
             System.out.println("|2| Penthouse");
             System.out.println("|3| House");
             userInput = scanner.nextInt();
+            scanner.nextLine();
+
 
             if (userInput >= Constants.REGULAR_APARTMENT && userInput <= Constants.HOUSE
                     || userInput == Constants.INVALID_VALUE) {
@@ -508,7 +480,7 @@ public class RealEstate {
             }
         } while (!endLoop);
         return type;
-    }
+    }  //O(1)
 
     private static Integer minPriceFilter() {
         Scanner scanner = new Scanner(System.in);
@@ -524,7 +496,7 @@ public class RealEstate {
         }
 
         return minPrice;
-    }
+    }  //O(1)
 
     private static Integer maxPriceFilter(Integer minimumPrice) {
         Scanner scanner = new Scanner(System.in);
@@ -555,7 +527,18 @@ public class RealEstate {
         } while (!endLoop);
 
         return maxPrice;
-    }
+    }  //O(1)
+
+    public static void printFilteredProperties(Property[] properties) {
+        int count = 0;
+
+        if (properties != null) {
+            for (int i = 0; i < properties.length; i++) {
+                count++;
+                System.out.println(count + ") " + properties[i] + "\n");
+            }
+        }
 
 
+    }  //O(n)
 }

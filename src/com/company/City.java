@@ -13,18 +13,17 @@ public class City {
         this.cityName = cityName;
         this.district = district;
         this.streets = streets;
-    }
-
+    } //O(1)
 
     public String toString() {
         return "district: " + this.district + ", city: " + this.cityName + ", street: " + Arrays.toString(this.streets);
-    }
+    } //O(1)
 
     public String[] getStreets() {
         return streets;
-    }
+    } //O(1)
 
     public String getCityName() {
         return cityName;
-    }
+    } //O(1)
 }

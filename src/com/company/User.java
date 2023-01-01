@@ -15,7 +15,7 @@ public class User {
 
     public static int getPostLimit() {
         return postLimit;
-    }
+    }  //O(1)
 
 
     public User() {
@@ -23,11 +23,11 @@ public class User {
         this.password = null;
         this.phoneNumber = null;
         this.broker = false;
-    }
+    }  //O(1)
 
     public static void setPostLimit(int postLimit) {
         User.postLimit = postLimit;
-    }
+    }  //O(1)
 
 
     private boolean equals(String userName) {
@@ -41,7 +41,7 @@ public class User {
             }
         }
         return isEquals;
-    }
+    }  //O(1)
 
     public User(String userNameChecker, String passwordValidation, String phoneNumberValidation, boolean brokerChecker) {
         this.userName = userNameChecker();
@@ -49,7 +49,7 @@ public class User {
         this.phoneNumber = phoneNumberValidation();
         this.broker = isBrokerChecker();
 
-    }
+    }  //O(1)
 
     public static String userNameChecker() {
         Scanner scanner = new Scanner(System.in);
@@ -77,7 +77,7 @@ public class User {
             }
         }
         return userNameToCheck;
-    }
+    } //O(n)
 
     public static String passwordValidation() {
         Scanner scanner = new Scanner(System.in);
@@ -121,7 +121,7 @@ public class User {
 
         System.out.println("Password accepted!");
         return passwordToCheck;
-    }
+    } //O(n)
 
     public static String phoneNumberValidation() {
         Scanner scanner = new Scanner(System.in);
@@ -142,7 +142,7 @@ public class User {
         return phoneNumberToCheck;
 
 
-    }
+    } //O(n)
 
     public static boolean isBrokerChecker() {
         Scanner scanner = new Scanner(System.in);
@@ -150,17 +150,18 @@ public class User {
         System.out.println("Enter |1| for No");
         System.out.println("Enter |2| for Yes");
         int usersChoice = scanner.nextInt();
+        scanner.nextLine();
         boolean isBroker = usersChoice == Constants.IS_BROKER;
         return isBroker;
 
-    }
+    } //O(n)
 
     public static int isMember(String userNameToCheck, String userPasswordCheck) {
         int result = Constants.INVALID_VALUE;
         if (users != null) {
-            for (int i = 0; i < users.length; i++){
-                if (users[i].getUserName().equals(userNameToCheck)){
-                    if (users[i].getPassword().equals(userPasswordCheck)){
+            for (int i = 0; i < users.length; i++) {
+                if (users[i].getUserName().equals(userNameToCheck)) {
+                    if (users[i].getPassword().equals(userPasswordCheck)) {
                         result = i;
                         break;
                     }
@@ -176,27 +177,27 @@ public class User {
 
     public String getUserName() {
         return userName;
-    }
+    }  //O(1)
 
     public String getPassword() {
         return password;
-    }
+    }  //O(1)
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
+    }  //O(1)
 
     public static boolean isBroker() {
         return broker;
-    }
+    }  //O(1)
 
     public String toString() {
         return "User name: " + this.userName + "\n" +
                 " Phone number: " + this.phoneNumber + "\n" +
                 " Is broker? " + this.broker;
-    }
+    } //O(n)
 
     public boolean equals(User other) {
         return this.userName.equals(other.userName);
-    }
+    }   //O(1)
 }
